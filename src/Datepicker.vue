@@ -85,7 +85,9 @@ export default {
     lang: {type: String, default: navigator.language},
     name: {type: String},
     placeholder: {type: String},
-    iconsFont: {type: String, default: 'glyphicon'}
+    iconsFont: {type: String, default: 'glyphicon'},
+    minDate: { type: String },
+    maxDate: { type: String },
   },
   data () {
     return {
@@ -124,6 +126,12 @@ export default {
     },
     disabledDaysArray () {
       return this.disabledDaysOfWeek.map(d => parseInt(d, 10))
+    },
+    minDateObject() {
+      return this.minDate ? this.parse(this.minDate) : null;
+    },
+    maxDateObject() {
+      return this.maxDate ? this.parse(this.maxDate) : null;
     }
   },
   methods: {
@@ -297,9 +305,14 @@ export default {
       for (let i = 1; i <= dayCount; i++) {
         const date = new Date(time.year, time.month, i)
         let sclass = ''
-        if (this.disabledDaysArray.indexOf(date.getDay()) > -1) {
-          sclass = 'datepicker-item-disable'
+        if (
+          this.disabledDaysArray.indexOf(date.getDay()) > -1 || 
+          (this.minDateObject && date < this.minDateObject) ||
+          (this.maxDateObject && date > this.maxDateObject)
+        ) {
+            sclass = 'datepicker-item-disable'
         }
+        
         if (i == time.day && date.getFullYear() == time.year && date.getMonth() == time.month){
           sclass = 'datepicker-dateRange-item-active'
         }

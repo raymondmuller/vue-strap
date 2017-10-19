@@ -4,7 +4,7 @@
       <p>
         <pre>Selected date is: {{dateString}}</pre>
       </p>
-      <datepicker ref="dp" v-model="date" :name="name" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" width="370px"></datepicker>
+      <datepicker :min-date="minimumDate" :max-date="maxDate" ref="dp" v-model="date" :name="name" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" width="370px"></datepicker>
       <h4>Disabled days of week</h4>
 
       <v-select multiple v-model="disabled" :options="[0,1,2,3,4,5,6]"></v-select>
@@ -12,11 +12,25 @@
       <h4>Format</h4>
       <v-select v-model="format" :options="formats"></v-select>
 
+      <h4>Minimum Date</h4>
+      <datepicker ref="dp" v-model="minDate" :name="name" :format="format" :clear-button="true" placeholder="Minimum Date" width="370px"></datepicker>
+      
+      <h4>Maximum Date</h4>
+      <datepicker :min-date="minimumDate" ref="dp" v-model="maxDate" :name="name" :format="format" :clear-button="true" placeholder="Maximum Date" width="370px"></datepicker>
+
       <h4>Reset button</h4>
       <checkbox :value="clear" @checked="clear = arguments[0]" type="primary">toggle clear button</checkbox>
     </div>
     <doc-code language="markup">
-      &lt;datepicker v-model="value" :disabled-days-of-Week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder">&lt;/datepicker>
+      &lt;datepicker
+      &emsp;&emsp;v-model="value"
+      &emsp;&emsp;:disabled-days-of-Week="disabled"
+      &emsp;&emsp;:format="format"
+      &emsp;&emsp;:clear-button="clear"
+      &emsp;&emsp;:min-date="minDate"
+      &emsp;&emsp;:max-date="maxDate"
+      &emsp;&emsp;:placeholder="placeholder">
+      &lt;/datepicker>
     </doc-code>
     <doc-table>
       <div>
@@ -38,6 +52,18 @@
         <p><code>String</code></p>
         <p><code>MMMM/dd/yyyy</code></p>
         <p>The date format, combination of d, dd, M, MM, MMM, MMMM, yyyy.</p>
+      </div>
+      <div>
+        <p>min-date</p>
+        <p><code>String</code></p>
+        <p></p>
+        <p>Defines the minimum available date. E.g. "2017-10-19"</p>
+      </div>
+      <div>
+        <p>max-date</p>
+        <p><code>String</code></p>
+        <p></p>
+        <p>Defines the maximum available date. E.g. "2017-10-19"</p>
       </div>
       <div>
         <p>name</p>
@@ -89,6 +115,9 @@ import Datepicker from 'src/Datepicker.vue'
 import vSelect from 'src/Select.vue'
 import vOption from 'src/Option.vue'
 
+const currentDate = new Date();
+const currentDateString = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`
+
 export default {
   components: {
     docSection,
@@ -106,7 +135,9 @@ export default {
       format: 'yyyy-MM-dd',
       formats: ['dd/MM/yyyy', 'dd-MM-yyyy', 'yyyy,MM,dd', 'yyyy-MM-dd', 'yyyy.MM.dd', 'MMM/dd/yyyy', 'MMMM/dd/yyyy', 'MM/dd/yyyy', 'MM-dd-yyyy'],
       placeholder: 'placeholder is displayed when value is null or empty',
-      date: '2015-06-10'
+      date: currentDateString ,
+      minDate: '',
+      maxDate: ''
     }
   },
   computed: {
@@ -118,6 +149,12 @@ export default {
         date = new Date(this.date)
       }
       return isNaN(date.getFullYear()) ? new Date().toString() : date.toString()
+    },
+    minimumDate () {
+      return this.minDate != '' ? this.minDate : null;
+    },
+    maximumDate () {
+      return this.maxDate != '' ? this.maxDate : null;
     }
   },
 }
