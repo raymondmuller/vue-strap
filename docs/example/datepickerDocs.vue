@@ -4,13 +4,16 @@
       <p>
         <pre>Selected date is: {{dateString}}</pre>
       </p>
-      <datepicker ref="dp" v-model="date" :name="name" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" width="370px"></datepicker>
+      <datepicker ref="dp" v-model="date" :readonly="readonly" :name="name" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" width="370px"></datepicker>
       <h4>Disabled days of week</h4>
 
       <v-select multiple v-model="disabled" :options="[0,1,2,3,4,5,6]"></v-select>
 
       <h4>Format</h4>
       <v-select v-model="format" :options="formats"></v-select>
+
+      <h4>Read Only</h4>
+      <checkbox :value="readonly" @checked="readonly = arguments[0]" type="primary">toggle readonly</checkbox>
 
       <h4>Reset button</h4>
       <checkbox :value="clear" @checked="clear = arguments[0]" type="primary">toggle clear button</checkbox>
@@ -38,6 +41,12 @@
         <p><code>String</code></p>
         <p><code>MMMM/dd/yyyy</code></p>
         <p>The date format, combination of d, dd, M, MM, MMM, MMMM, yyyy.</p>
+      </div>
+      <div>
+        <p>readonly</p>
+        <p><code>Boolean</code></p>
+        <p><code>false</code></p>
+        <p>Toggle the readonly attribute on the input tag.</p>
       </div>
       <div>
         <p>name</p>
@@ -101,6 +110,7 @@ export default {
   },
   data () {
     return {
+      readonly: false,
       clear: true,
       disabled: [],
       format: 'yyyy-MM-dd',

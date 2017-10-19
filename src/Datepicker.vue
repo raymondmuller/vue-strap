@@ -4,6 +4,7 @@
       v-model="val"
       :class="{'with-reset-button': clearButton}"
       :name="name"
+      :readonly="readonly"
       :placeholder="placeholder"
       :style="{width:width}"
       @click="inputClick"
@@ -85,6 +86,7 @@ export default {
     lang: {type: String, default: navigator.language},
     name: {type: String},
     placeholder: {type: String},
+    readonly: { type: Boolean, default: false},
     iconsFont: {type: String, default: 'glyphicon'}
   },
   data () {
