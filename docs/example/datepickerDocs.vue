@@ -4,7 +4,7 @@
       <p>
         <pre>Selected date is: {{dateString}}</pre>
       </p>
-      <datepicker :min-date="minimumDate" :max-date="maxDate" ref="dp" v-model="date" :name="name" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" width="370px"></datepicker>
+      <datepicker :min-date="minDate" :max-date="maxDate" ref="dp" v-model="date" :name="name" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" width="370px"></datepicker>
       <h4>Disabled days of week</h4>
 
       <v-select multiple v-model="disabled" :options="[0,1,2,3,4,5,6]"></v-select>
@@ -13,10 +13,10 @@
       <v-select v-model="format" :options="formats"></v-select>
 
       <h4>Minimum Date</h4>
-      <datepicker ref="dp" v-model="minDate" :name="name" :format="format" :clear-button="true" placeholder="Minimum Date" width="370px"></datepicker>
+      <datepicker ref="dp-min" :max-date="maxDate" v-model="minDate" :name="name" :format="format" :clear-button="true" placeholder="Minimum Date" width="370px"></datepicker>
       
       <h4>Maximum Date</h4>
-      <datepicker :min-date="minimumDate" ref="dp" v-model="maxDate" :name="name" :format="format" :clear-button="true" placeholder="Maximum Date" width="370px"></datepicker>
+      <datepicker :min-date="minDate" ref="dp-max" v-model="maxDate" :name="name" :format="format" :clear-button="true" placeholder="Maximum Date" width="370px"></datepicker>
 
       <h4>Reset button</h4>
       <checkbox :value="clear" @checked="clear = arguments[0]" type="primary">toggle clear button</checkbox>
@@ -149,12 +149,6 @@ export default {
         date = new Date(this.date)
       }
       return isNaN(date.getFullYear()) ? new Date().toString() : date.toString()
-    },
-    minimumDate () {
-      return this.minDate != '' ? this.minDate : null;
-    },
-    maximumDate () {
-      return this.maxDate != '' ? this.maxDate : null;
     }
   },
 }
